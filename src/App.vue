@@ -14,26 +14,25 @@ export default {
   name: 'App',
   data() {
     return {
-      transitionName: 'slide-left'  // Default transition
+      transitionName: 'slide-left'  // Default transition (if no transition is set in route)
     }
   },
   watch: {
     // Watch route change and update transition name
     $route(to, from) {
-      // Log to the console when route changes
       console.log('Navigating from:', from.name, 'to:', to.name);
       
       // Log the transition name to verify it's being set correctly
       console.log('Transition name:', to.meta.transition);
 
-      // Set the transition name based on the route metadata
-      this.transitionName = to.meta.transition || 'fade';
+      // Set the transition name based on the route metadata or default to 'fade'
+      this.transitionName = to.meta.transition || 'fade';  // Default transition is 'fade'
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 /* Slide from right (Login -> Dashboard) */
 .slide-right-enter-active, .slide-right-leave-active {
   transition: all 0.4s ease;
@@ -57,6 +56,14 @@ export default {
 }
 .slide-left-leave-to {
   transform: translateX(100%);
+  opacity: 0;
+}
+
+/* Fade transition (fallback) */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.4s ease;
+}
+.fade-enter-from, .fade-leave-to {
   opacity: 0;
 }
 </style>

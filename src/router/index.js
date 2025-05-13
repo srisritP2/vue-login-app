@@ -1,13 +1,16 @@
+// src/router/index.js
+
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginPage from '../components/LoginPage.vue'
 import DashboardPage from '../components/DashboardPage.vue'
+import auth from '../auth'
 
 const routes = [
   {
     path: '/',
     redirect: '/login'
   },
-  {
+    {
     path: '/login',
     name: 'Login',
     component: LoginPage,
@@ -24,6 +27,15 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes
+})
+
+// 🔒 Global guard for all protected routes
+router.beforeEach((to, from, next) => {
+  if (to.path === '/dashboard' && !auth.isAuthenticated) {
+    next('/')  // Redirect to login page
+  } else {
+    next()  // Proceed with route navigation
+  }
 })
 
 export default router

@@ -41,21 +41,24 @@
 </template>
 
 <script>
+import auth from '../auth'  // Import the fake auth module
+
 export default {
   name: 'LoginPage',
   data() {
     return {
       email: '',
       password: '',
-      formValid: false,
+      formValid: false
     }
   },
   methods: {
     submitForm() {
-      // Check if the form is valid
       if (this.$refs.loginForm.validate()) {
-        // If valid, navigate to the dashboard page
-        this.$router.push('/dashboard');
+        // Fake authentication
+        auth.login()  // This would log the user in
+        console.log("User authenticated:", auth.isAuthenticated)  // Log to check
+        this.$router.push('/dashboard')  // Redirect to dashboard
       }
     }
   }

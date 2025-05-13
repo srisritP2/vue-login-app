@@ -6,13 +6,17 @@
 </template>
 
 <script>
+import auth from '../auth'
+
+
 export default {
   name: 'DashboardPage',
   methods: {
-    // Navigate back to the login page
     goBack() {
-      this.$router.push('/login');
+      auth.logout()  // Log out the user
+      this.$router.replace('/login')  // Use replace to avoid navigating back to dashboard
     }
   }
 }
 </script>
+
