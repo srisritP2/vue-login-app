@@ -1,6 +1,4 @@
-// src/router/index.js
-
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import LoginPage from '../components/LoginPage.vue'
 import DashboardPage from '../components/DashboardPage.vue'
 import auth from '../auth'
@@ -10,7 +8,7 @@ const routes = [
     path: '/',
     redirect: '/login'
   },
-    {
+  {
     path: '/login',
     name: 'Login',
     component: LoginPage,
@@ -25,7 +23,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),  // <-- Use hash history here
   routes
 })
 
