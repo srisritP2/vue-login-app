@@ -8,7 +8,7 @@
         <!-- Card with padding and custom styles -->
         <v-card class="pa-4 login-card" elevation="12">
           <!-- Title text centered -->
-          <v-card-title class="text-h6 justify-center">Login</v-card-title>
+          <v-card-title class="text-h6 text-center">App SignIn</v-card-title>
 
           <!-- Card content area -->
           <v-card-text>
@@ -100,7 +100,7 @@ export default {
 <style scoped>
 /* Background gradient for entire container */
 .login-background {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #66ea80, #764ba2);
   background-size: cover;          /* Make sure background covers entire area */
   background-position: center;     /* Center the background */
 }
