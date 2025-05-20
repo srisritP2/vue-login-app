@@ -1,62 +1,67 @@
 <template>
-  <!-- Container fills full height and uses custom background styles -->
+  <!-- Full-height container with custom gradient background -->
   <v-container class="login-background fill-height" fluid>
-    <!-- Center content vertically and horizontally -->
+    <!-- Center content both vertically and horizontally -->
     <v-row align="center" justify="center">
-      <!-- Column for responsive sizing with fade-in animation -->
+      <!-- Responsive column with entrance animation -->
       <v-col cols="12" sm="8" md="4" class="login-animate">
-        <!-- Card with padding and custom styles -->
+        <!-- Card container with padding, elevation, and custom styles -->
         <v-card class="pa-4 login-card" elevation="12">
-          <!-- Title text centered -->
-          <v-card-title class="text-h6 text-center">App SignIn</v-card-title>
+          <!-- Title centered with larger font size -->
+          <v-card-title class="text-h5 font-weight-bold text-center">
+          
+            <!-- Logo centered at the top -->
+              <div class="text-center mb-4">
+                <v-img
+                  src="@/assets/logo.png"
+                  max-width="120"
+                  class="mx-auto login-logo"
+                  alt="App Logo"
+                  contain
+                />
+              </div>
+              Welcome Back 👋
+               </v-card-title>
+       
 
-          <!-- Card content area -->
+          <!-- Body of the card containing the form -->
           <v-card-text>
-            <!-- Form with validation binding -->
+            <!-- Vuetify form with validation tracking -->
             <v-form ref="loginForm" v-model="formValid">
-              <!-- Email input field -->
-                  <!-- Label shown above input -->
-                  <!-- Two-way binding to data.email -->
-                  <!-- Validation rule: must be filled -->
-                  <!-- Icon inside input -->
-                  <!-- HTML5 required attribute -->
+              <!-- Email input -->
               <v-text-field
-                label="Email"                  
-                v-model="email"                
-                :rules="[v => !!v || 'Email is required']"  
+                label="Email"
+                v-model="email"
+                :rules="[v => !!v || 'Email is required']"
                 prepend-inner-icon="mdi-email"
-                required                      
+                type="email"
+                required
+                hide-details="auto"
               />
-              <!-- Password input field -->
-                  <!-- Label for password -->
-                  <!-- Two-way binding to data.password -->
-                  <!-- Validation rule -->
-                  <!-- Mask input as password -->
-                   <!-- Lock icon -->
-                  <!-- Required input -->
+
+              <!-- Password input -->
               <v-text-field
-                label="Password"              
-                v-model="password"            
-                :rules="[v => !!v || 'Password is required']" 
-                type="password"                
-                prepend-inner-icon="mdi-lock"  
-                required                      
+                label="Password"
+                v-model="password"
+                :rules="[v => !!v || 'Password is required']"
+                prepend-inner-icon="mdi-lock"
+                type="password"
+                required
+                hide-details="auto"
               />
             </v-form>
           </v-card-text>
 
-          <!-- Card actions with button centered -->
+          <!-- Action buttons centered -->
           <v-card-actions class="justify-center">
-            <!-- Login button -->
-             <!-- Primary color from Vuetify theme -->
-                  <!-- Custom CSS for animation -->
-                  <!-- Disabled when form is invalid -->
-                  <!-- On click, call submitForm method -->
+            <!-- Login button triggers form submission -->
             <v-btn
-              color="primary"               
-              class="login-button"          
-              :disabled="!formValid"        
-              @click="submitForm"           
+              color="deep-purple accent-4"
+              class="login-button"
+              :disabled="!formValid"
+              @click="submitForm"
+              block
+              large
             >
               Login
             </v-btn>
@@ -68,29 +73,28 @@
 </template>
 
 <script>
-import auth from '../auth'  // Import your fake authentication module
+// Import the fake authentication logic
+import auth from '../auth'
 
 export default {
-  name: 'LoginPage',       // Component name
+  name: 'LoginPage',
 
   data() {
     return {
-      email: '',            // User email input model
-      password: '',         // User password input model
-      formValid: false,     // Validation status of the form (true or false)
+      email: '',            // Stores user's email input
+      password: '',         // Stores user's password input
+      formValid: false      // Tracks if the form is valid
     }
   },
 
   methods: {
+    // Submit handler for the login form
     submitForm() {
-      // Validate the form by calling the validate() method on the v-form ref
+      // Validate the form using Vuetify's form validation
       if (this.$refs.loginForm.validate()) {
-        // Call fake login method (simulate user login)
-        auth.login()
-        // Log current authentication status in console (for debugging)
-        console.log("User authenticated:", auth.isAuthenticated)
-        // Redirect user to the dashboard route after successful login
-        this.$router.push('/dashboard')
+        auth.login() // Fake login action
+        console.log("User authenticated:", auth.isAuthenticated) // Debug log
+        this.$router.push('/dashboard') // Navigate to dashboard on success
       }
     }
   }
@@ -98,47 +102,50 @@ export default {
 </script>
 
 <style scoped>
-/* Background gradient for entire container */
+/* Gradient background for the login page */
 .login-background {
-  background: linear-gradient(135deg, #66ea80, #764ba2);
-  background-size: cover;          /* Make sure background covers entire area */
-  background-position: center;     /* Center the background */
+  background: linear-gradient(135deg, #64b5f6, #8e24aa); /* Blue to purple gradient */
+  background-size: cover;
+  background-position: center;
 }
-
-/* Card styling for rounded corners and transition */
+.login-logo {
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+.login-logo:hover {
+  transform: scale(1.05);
+}
+/* Card style: rounded, shadow, and hover scaling */
 .login-card {
-  border-radius: 20px;              /* Rounded edges */
-  transition: transform 0.5s ease, box-shadow 0.5s ease;  /* Smooth animation on transform & shadow */
+  border-radius: 20px;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
-
-/* On hover, scale card slightly and add shadow */
 .login-card:hover {
-  transform: scale(1.02);           /* Slightly bigger */
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  transform: scale(1.02);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
 }
 
-/* Button animation: smooth scaling on press */
+/* Button style with animation on press */
 .login-button {
-  transition: transform 0.2s ease;  /* Smooth scaling */
+  transition: transform 0.2s ease;
 }
-
-/* When button is pressed */
 .login-button:active {
-  transform: scale(0.98);           /* Slightly smaller to simulate press */
+  transform: scale(0.97);
 }
 
-/* Initial fade-in animation for the login form column */
+/* Fade-in animation for login form container */
 .login-animate {
-  opacity: 0;                      /* Start invisible */
-  transform: translateY(20px);    /* Start slightly down */
-  animation: fadeInUp 0.6s ease forwards;  /* Animate to visible and original position */
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.6s ease-out forwards;
 }
 
-/* Keyframes for fade-in and slide-up */
+/* Keyframe for slide up & fade in */
 @keyframes fadeInUp {
   to {
-    opacity: 1;                   /* Fully visible */
-    transform: translateY(0);    /* Move to original position */
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 </style>
