@@ -1,77 +1,76 @@
 <template>
-  <!-- Full-height layout with background -->
-  <v-container fluid class="dashboard-background fill-height">
-    <!-- App Bar at the top -->
-    <v-app-bar color="primary" dark flat>
-      <v-toolbar-title>My App Dashboard</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn @click="logout" text>Logout</v-btn>
+  <v-app>
+    <!-- Sidebar -->
+    <v-navigation-drawer app v-model="drawer" color="deep-purple accent-4" dark>
+      <v-list>
+        <v-list-item prepend-icon="mdi-view-dashboard" title="Dashboard" />
+        <v-list-item prepend-icon="mdi-account" title="Profile" />
+        <v-list-item prepend-icon="mdi-logout" title="Logout" @click="logout" />
+      </v-list>
+    </v-navigation-drawer>
+
+    <!-- Top App Bar -->
+    <v-app-bar app color="deep-purple accent-4" dark>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-toolbar-title>My Dashboard</v-toolbar-title>
     </v-app-bar>
 
-    <!-- Dashboard content -->
-    <v-row class="pa-6" align="center" justify="center">
-      <!-- Welcome message -->
-      <v-col cols="12">
-        <h2 class="text-center text-white font-weight-medium">
-          Welcome back, {{ userName }}! 🎉
-        </h2>
-      </v-col>
-
-      <!-- Dashboard cards -->
-      <v-col cols="12" sm="6" md="4">
-        <v-card class="dashboard-card" elevation="8">
-          <v-card-title>Statistics</v-card-title>
-          <v-card-text>
-            <p>You have 24 new messages.</p>
-          </v-card-text>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="4">
-        <v-card class="dashboard-card" elevation="8">
-          <v-card-title>Profile</v-card-title>
-          <v-card-text>
-            <p>Edit your preferences or profile information.</p>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+    <!-- Main Content -->
+    <v-main>
+      <v-container class="py-6">
+        <transition name="fade">
+          <v-card v-if="userStats" class="pa-4 mb-6" elevation="4">
+            <v-card-title>User Stats</v-card-title>
+            <v-card-text>
+              <user-stats-chart :data="userStats.data" :labels="userStats.labels" />
+            </v-card-text>
+          </v-card>
+        </transition>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-import auth from '../auth'  // Use your auth module
+import UserStatsChart from '@/components/UserStatsChart.vue';
 
 export default {
   name: 'DashboardPage',
+  components: {
+    UserStatsChart
+  },
   data() {
     return {
-      userName: 'User'  // Static for now; can be dynamic later
+      drawer: true,
+      userStats: null
     }
   },
+  created() {
+    this.fetchUserStats();
+  },
   methods: {
+    async fetchUserStats() {
+      // Simulated async API call; replace with real API call
+      setTimeout(() => {
+        this.userStats = {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+          data: [12, 19, 3, 5, 8]
+        };
+      }, 1000);
+    },
     logout() {
-      auth.logout()
-      this.$router.push('/login')
+      // Add logout logic (clear auth, redirect, etc.)
+      this.$router.push('/login');
     }
   }
 }
 </script>
 
 <style scoped>
-/* Background gradient for dashboard */
-.dashboard-background {
-  background: linear-gradient(135deg, #764ba2, #667eea);
-  color: white;
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s ease;
 }
-
-/* Card style */
-.dashboard-card {
-  border-radius: 16px;
-  transition: transform 0.3s ease;
-}
-
-.dashboard-card:hover {
-  transform: translateY(-5px);
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
 }
 </style>
